@@ -1,0 +1,15 @@
+{
+    "name": "muneer/e-xcrm",
+    "description": "Hyper CRM project",
+    "require": {
+        "doctrine/orm": "~2.4",
+        "symfony/yaml": "^4.2",
+        "dompdf/dompdf": "^0.8.3"
+    },
+    "authors": [
+        {
+            "name": "Muneer Shaheed",
+            "email": "muneer@live.it"
+        }
+    ]
+}

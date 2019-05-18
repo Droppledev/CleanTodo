@@ -1,0 +1,11 @@
+CleanTodo\Domain\Entity\Customer:
+  type: entity
+  table: customers
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: IDENTITY
+  fields:
+    label:
+      length: 256
