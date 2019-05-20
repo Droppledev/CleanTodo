@@ -15,6 +15,6 @@ class DeleteTodoUseCase
     }
     public function deleteById($id)
     {
-        $this->todoRepo->deleteById($id);
+        $this->todoRepo->deleteTodoById($id);
     }
 }

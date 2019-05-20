@@ -13,6 +13,6 @@ class InsertTodoUseCase
     }
     public function insertTodo(Todo $todo)
     {
-        $this->todoRepo->begin()->persist($todo)->commit();
+        $this->todoRepo->insertTodo($todo);
     }
 }

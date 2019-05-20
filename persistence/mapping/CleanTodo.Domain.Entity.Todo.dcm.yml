@@ -9,3 +9,16 @@ CleanTodo\Domain\Entity\Todo:
   fields:
     title:
       length: 256
+    createdAt:
+      column: created_at
+    dateStart:
+      column: start_date
+    dateEnd:
+      column: end_date
+  manyToOne:
+    user:
+      targetEntity: CleanTodo\Domain\Entity\User
+      joinColumn:
+        name: user_id
+        inversedBy: todos
+        referencedColumnName: id

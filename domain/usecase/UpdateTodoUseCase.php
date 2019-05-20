@@ -14,6 +14,6 @@ class UpdateTodoUseCase
 
     public function update(Todo $todo)
     {
-        $this->todoRepo->update($todo);
+        $this->todoRepo->updateTodo($todo);
     }
 }

@@ -10,11 +10,16 @@ class GeneratePdfUseCase
     {
         $this->pdf = $pdf;
     }
-    public function generateFromHtml($html)
+    public function generatePdf($todos)
+    {
+        $html = $this->generateHtml($todos);
+        $this->generateFromHtml($html);
+    }
+    private function generateFromHtml($html)
     {
         $this->pdf->generateFromHtml($html);
     }
-    public function generateHtml($todos)
+    private function generateHtml($todos)
     {
         $i = 1;
         $html = <<<ENDHTML

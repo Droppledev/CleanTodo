@@ -12,10 +12,10 @@ class GetTodoUseCase
     }
     public function getAll()
     {
-        return $this->todoRepo->getAll();
+        return $this->todoRepo->getAllTodo();
     }
     public function getById($id)
     {
-        return $this->todoRepo->getById($id);
+        return $this->todoRepo->getTodoById($id);
     }
 }

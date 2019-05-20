@@ -1,0 +1,18 @@
+CleanTodo\Domain\Entity\User:
+  type: entity
+  table: user
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: IDENTITY
+  fields:
+    username:
+      unique: true
+      length: 256
+    password:
+      length: 256
+  oneToMany:
+    todos:
+      targetEntity: CleanTodo\Domain\Entity\Todo
+      mappedBy: user

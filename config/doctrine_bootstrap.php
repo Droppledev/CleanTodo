@@ -15,8 +15,8 @@ $entityManager = Doctrine\ORM\EntityManager::create($conn, $doctrine_config);
 $di->setShared('entityManager', function () use ($entityManager) {
     return $entityManager;
 });
-$di->setShared('customerRepository', [
-    'className' => 'CleanTodo\Persistence\Repository\CustomerRepository',
+$di->setShared('userRepository', [
+    'className' => 'CleanTodo\Persistence\Repository\UserRepository',
     'arguments' => [
         [
             'type' => 'service',
@@ -24,8 +24,8 @@ $di->setShared('customerRepository', [
         ]
     ]
 ]);
-$di->setShared('customerEntity', function () {
-    return new CleanTodo\Domain\Entity\Customer;
+$di->setShared('userEntity', function () {
+    return new CleanTodo\Domain\Entity\User;
 });
 $di->setShared('todoRepository', [
     'className' => 'CleanTodo\Persistence\Repository\TodoRepository',
@@ -73,6 +73,24 @@ $di->setShared('updateTodoUseCase', [
         [
             'type' => 'service',
             'name' => 'todoRepository'
+        ]
+    ]
+]);
+$di->setShared('registerUseCase', [
+    'className' => 'CleanTodo\Domain\UseCase\RegisterUseCase',
+    'arguments' => [
+        [
+            'type' => 'service',
+            'name' => 'userRepository'
+        ]
+    ]
+]);
+$di->setShared('loginUseCase', [
+    'className' => 'CleanTodo\Domain\UseCase\LoginUseCase',
+    'arguments' => [
+        [
+            'type' => 'service',
+            'name' => 'userRepository'
         ]
     ]
 ]);

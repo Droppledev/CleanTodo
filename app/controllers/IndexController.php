@@ -4,66 +4,36 @@ class IndexController extends ControllerBase
 {
 	public function indexAction()
 	{
-		$getTodoUseCase = $this->di['getTodoUseCase'];
+		if (!$this->session->has("auth")) {
+			if ($this->request->isPost()) {
+				$username = $this->request->get("username");
+				$password = $this->request->get("password");
+				$loginUseCase = $this->di['loginUseCase'];
 
-		$todos = $getTodoUseCase->getAll();
-		$this->view->todos = $todos;
-	}
-	public function insertAction()
-	{
-		$insertTodoUseCase = $this->di['insertTodoUseCase'];
-		$request = $this->di['request'];
-		$response = $this->di['response'];
+				$user = $loginUseCase->getUser($username, $password);
 
-		if ($request->isPost()) {
-			$todoEntity = $this->di['todoEntity'];
-			$todoEntity->setTitle($request->get("todo"));
-			$insertTodoUseCase->insertTodo($todoEntity);
-			$response->redirect("");
+				if ($user) {
+					$this->session->set(
+						'auth',
+						[
+							'id'   => $user->getId(),
+							'name' => $user->getUsername(),
+						]
+					);
+					$this->response->redirect("todo");
+				} else {
+					$this->flashSession->error("Incorrect Username/Password");
+					$this->response->redirect("");
+				}
+			}
+		} else {
+			$this->response->redirect("todo");
 		}
 	}
-	public function deleteAction()
+	public function logoutAction()
 	{
-		$deleteTodoUseCase = $this->di['deleteTodoUseCase'];
-		$request = $this->di['request'];
-		$response = $this->di['response'];
-
-		if ($request->isPost()) {
-			$id = $request->get("id");
-			$deleteTodoUseCase->deleteById($id);
-			$response->redirect("");
-		}
-	}
-	public function updateAction()
-	{
-		$updateTodoUseCase = $this->di['updateTodoUseCase'];
-		$request = $this->di['request'];
-		$response = $this->di['response'];
-
-		if ($request->isPost()) {
-			$id = $request->get("id");
-			$title = $request->get("title");
-
-			$todoEntity = $this->di['todoEntity'];
-			$todoEntity->setId($id);
-			$todoEntity->setTitle($title);
-
-			$updateTodoUseCase->update($todoEntity);
-			$response->redirect("");
-		}
-	}
-	public function pdfAction()
-	{
-		// $domPdf = $this->di['dompdf'];
-		$request = $this->di['request'];
-		$getTodoUseCase = $this->di['getTodoUseCase'];
-
-		$todos = $getTodoUseCase->getAll();
-
-		if ($request->isPost()) {
-			$generatePdfUseCase = $this->di['generatePdfUseCase'];
-			$html = $generatePdfUseCase->generateHtml($todos);
-			$generatePdfUseCase->generateFromHtml($html);
-		}
+		$this->session->destroy();
+		$this->flashSession->success("You've been logged out successfully");
+		$this->response->redirect("");
 	}
 }
