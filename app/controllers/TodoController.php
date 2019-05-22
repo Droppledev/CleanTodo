@@ -27,24 +27,47 @@ class TodoController extends ControllerBase
         $this->view->setVar('todoPriorities', $todo_priorities);
         $this->view->setVar('todoStatuses', $todo_statuses);
     }
+    public function todayfutureAction()
+    {
+        $this->_getSession();
+        $getTodoUseCase = $this->di['getTodoUseCase'];
+        $getTodoPriorityUseCase = $this->di['getTodoPriorityUseCase'];
+        $getTodoStatusUseCase = $this->di['getTodoStatusUseCase'];
+
+        $user = $this->session->get('auth');
+        $todos = $getTodoUseCase->getAll($user['id']);
+        $todo_priorities = $getTodoPriorityUseCase->getAll();
+        $todo_statuses = $getTodoStatusUseCase->getAll();
+
+        $this->view->setVar('todos', $todos);
+        $this->view->setVar('todoPriorities', $todo_priorities);
+        $this->view->setVar('todoStatuses', $todo_statuses);
+    }
     public function insertAction()
     {
         $this->_getSession();
         $insertTodoUseCase = $this->di['insertTodoUseCase'];
-        $todoPriorityRepo = $this->di['todoPriorityRepository'];
-        $todoStatusRepo = $this->di['todoStatusRepository'];
-        $userRepo = $this->di['userRepository'];
+        $requestTodoUseCase = $this->di['requestTodoUseCase'];
+
         if ($this->request->isPost()) {
             $todoEntity = $this->di['todoEntity'];
             $todoDetailEntity = $this->di['todoDetailEntity'];
-            $todoEntity->setTitle($this->request->get("title"));
-            $todoEntity->setDetail($todoDetailEntity->setDetail($this->request->get("detail")));
-            $todoEntity->setUser($userRepo->getReference($this->session->get("auth")['id']));
-            $todoEntity->setPriority($todoPriorityRepo->getReference($this->request->get("priority")));
-            $todoEntity->setStatus($todoStatusRepo->getReference($this->request->get("status")));
-            $todoEntity->setCreatedAt();
-            $todoEntity->setDateStart(new \DateTime('@' . strtotime($this->request->get("start-date"))));
-            $todoEntity->setDateEnd(new \DateTime('@' . strtotime($this->request->get("end-date"))));
+
+            $todoTitle = $this->request->get("title");
+            $todoDetail = $this->request->get("detail");
+            $todoUser = $this->session->get("auth")['id'];
+            $todoPriority = $this->request->get("priority");
+            $todoStatus = $this->request->get("status");
+            $todoStartDate = $this->request->get("start-date");
+            $todoEndDate = $this->request->get("end-date");
+
+            if ($todoStartDate > $todoEndDate) {
+                $this->flashSession->error("Start date can't be greater than end date !");
+                $this->response->redirect("");
+                return;
+            }
+
+            $todoEntity = $requestTodoUseCase->preInsert($todoEntity, $todoDetailEntity, $todoTitle, $todoDetail, $todoUser, $todoPriority, $todoStatus, $todoStartDate, $todoEndDate);
             $insertTodoUseCase->insertTodo($todoEntity);
             $this->flashSession->success("New Todo Added !");
             $this->response->redirect("");
@@ -66,25 +89,28 @@ class TodoController extends ControllerBase
     {
         $this->_getSession();
         $updateTodoUseCase = $this->di['updateTodoUseCase'];
-
-        $todoPriorityRepo = $this->di['todoPriorityRepository'];
-        $todoStatusRepo = $this->di['todoStatusRepository'];
-        $userRepo = $this->di['userRepository'];
+        $requestTodoUseCase = $this->di['requestTodoUseCase'];
 
         if ($this->request->isPost()) {
-            $id = $this->request->get("id");
             $todoEntity = $this->di['todoEntity'];
-            $todoEntity->setId($id);
             $todoDetailEntity = $this->di['todoDetailEntity'];
-            $todoEntity->setTitle($this->request->get("title"));
-            $todoEntity->setDetail($todoDetailEntity->setDetail($this->request->get("detail")));
-            $todoEntity->setUser($userRepo->getReference($this->session->get("auth")['id']));
-            $todoEntity->setPriority($todoPriorityRepo->getEntity($this->request->get("priority")));
-            $todoEntity->setStatus($todoStatusRepo->getEntity($this->request->get("status")));
-            $todoEntity->setCreatedAt();
-            $todoEntity->setDateStart(new \DateTime('@' . strtotime($this->request->get("start-date"))));
-            $todoEntity->setDateEnd(new \DateTime('@' . strtotime($this->request->get("end-date"))));
 
+            $todoId = $this->request->get("id");
+            $todoTitle = $this->request->get("title");
+            $todoDetail = $this->request->get("detail");
+            $todoUser = $this->session->get("auth")['id'];
+            $todoPriority = $this->request->get("priority");
+            $todoStatus = $this->request->get("status");
+            $todoStartDate = $this->request->get("start-date");
+            $todoEndDate = $this->request->get("end-date");
+
+            if ($todoStartDate > $todoEndDate) {
+                $this->flashSession->error("Start date can't be greater than end date !");
+                $this->response->redirect("");
+                return;
+            }
+
+            $todoEntity = $requestTodoUseCase->preUpdate($todoEntity, $todoDetailEntity, $todoId, $todoTitle, $todoDetail, $todoUser, $todoPriority, $todoStatus, $todoStartDate, $todoEndDate);
             $updateTodoUseCase->update($todoEntity);
             $this->flashSession->success("Todo Updated !");
             $this->response->redirect("");

@@ -23,11 +23,16 @@ class GeneratePdfUseCase
     {
         $i = 1;
         $html = <<<ENDHTML
-<table width="300" border="1" cellpadding="2" cellspacing="3">
+<table border="1" cellpadding="2" cellspacing="3">
 <thead>
     <tr>
     <th>No</th>
-    <th>Todo</th>
+    <th>Title</th>
+    <th>Detail</th>
+    <th>Priority</th>
+    <th>Status</th>
+    <th>Date Start</th>
+    <th>Date End</th>
     </tr>
 </thead>
 <tbody>
@@ -38,6 +43,11 @@ ENDHTML;
     <tr>
     <td> " . $i++ . " </td>
     <td> " . $todo->getTitle() . " </td>
+    <td> " . $todo->getDetail()->getDetail() . " </td>
+    <td> " . $todo->getPriority()->getPriority() . " </td>
+    <td> " . $todo->getStatus()->getStatus() . " </td>
+    <td> " . $todo->getDateStart() . " </td>
+    <td> " . $todo->getDateEnd() . " </td>
     </tr>
     ";
         }

@@ -14,4 +14,30 @@ class GetTodoUseCase
     {
         return $this->userRepo->getAllTodoByUserId($id);
     }
+
+    public function getAllToJson($user)
+    {
+        $todos = $this->userRepo->getAllTodoByUserId($user->getId());
+        $data = array();
+        foreach ($todos as $todo) {
+            array_push(
+                $data,
+                array(
+                    'title' => $todo->getTitle(),
+                    'detail' => $todo->getDetail()->getDetail(),
+                    'priority' => $todo->getPriority()->getPriority(),
+                    'status' => $todo->getStatus()->getStatus(),
+                    'date_start' => $todo->getDateStart(),
+                    'date_end' => $todo->getDateEnd(),
+                )
+            );
+        }
+        $json = [
+            "status" => "OK",
+            "user_id" => $user->getId(),
+            "user_name" => $user->getUsername(),
+            "todos" => $data
+        ];
+        return $json;
+    }
 }

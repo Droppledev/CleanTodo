@@ -47,6 +47,9 @@
                     <button class="btn btn-primary" type="submit" name="add"><i class="fas fa-file-pdf"></i> Export to PDF</button>
                 </form>
             </div>
+            <div class="d-flex justify-content-center">
+              <h3>Today Task</h3>
+            </div>
 
               <table class="table">
                 <thead>
@@ -61,7 +64,99 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for todo in todos %}
+                  {% for todo in todos if todo.getDateStart() <= date("d-m-Y") and todo.getDateEnd() > date("d-m-Y") %}
+                    <tr>
+                      <td>{{ todo.getTitle() }}</td>
+                      <td>{{ todo.getDetail().getDetail() }}</td>
+                      <td>{{ todo.getPriority().getPriority() }}</td>
+                      <td>{{ todo.getStatus().getStatus() }}</td>
+                      <td>{{ todo.getDateStart() }}</td>
+                      <td>{{ todo.getDateEnd() }}</td>
+                      <td class="text-center row">
+                        <button type="button" class="btn btn-warning mr-3" 
+                        data-toggle="modal" 
+                        data-target="#editModal" 
+                        data-id="{{ todo.getId() }}"  
+                        data-todo="{{ todo.getTitle() }}"
+                        data-detail="{{ todo.getDetail().getDetail() }}"
+                        data-priority="{{ todo.getPriority().getId() }}"
+                        data-status="{{ todo.getStatus().getId() }}"
+                        data-date-start="{{ todo.getDateStart() }}"
+                        data-date-end="{{ todo.getDateEnd() }}">
+                        <i class="fas fa-edit"></i></button>
+                        <form action="{{url.get("todo/delete")}}" method="post">
+                          <input type="hidden" name="id" value="{{ todo.getId() }}">
+                          <button class="btn btn-danger" type="submit" name="delete" onclick="return confirm('Are you sure to delete?')"><i class="fas fa-trash"></i></button>
+                        </form>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            <div class="d-flex justify-content-center">
+              <h3>Future Task</h3>
+            </div>
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Date Start</th>
+                    <th>Date End</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for todo in todos if todo.getDateStart() > date("d-m-Y") %}
+                    <tr>
+                      <td>{{ todo.getTitle() }}</td>
+                      <td>{{ todo.getDetail().getDetail() }}</td>
+                      <td>{{ todo.getPriority().getPriority() }}</td>
+                      <td>{{ todo.getStatus().getStatus() }}</td>
+                      <td>{{ todo.getDateStart() }}</td>
+                      <td>{{ todo.getDateEnd() }}</td>
+                      <td class="text-center row">
+                        <button type="button" class="btn btn-warning mr-3" 
+                        data-toggle="modal" 
+                        data-target="#editModal" 
+                        data-id="{{ todo.getId() }}"  
+                        data-todo="{{ todo.getTitle() }}"
+                        data-detail="{{ todo.getDetail().getDetail() }}"
+                        data-priority="{{ todo.getPriority().getId() }}"
+                        data-status="{{ todo.getStatus().getId() }}"
+                        data-date-start="{{ todo.getDateStart() }}"
+                        data-date-end="{{ todo.getDateEnd() }}">
+                        <i class="fas fa-edit"></i></button>
+                        <form action="{{url.get("todo/delete")}}" method="post">
+                          <input type="hidden" name="id" value="{{ todo.getId() }}">
+                          <button class="btn btn-danger" type="submit" name="delete" onclick="return confirm('Are you sure to delete?')"><i class="fas fa-trash"></i></button>
+                        </form>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            <div class="d-flex justify-content-center">
+              <h3>Overdue Task</h3>
+            </div>
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Date Start</th>
+                    <th>Date End</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for todo in todos if todo.getDateEnd() < date("d-m-Y")%}
                     <tr>
                       <td>{{ todo.getTitle() }}</td>
                       <td>{{ todo.getDetail().getDetail() }}</td>

@@ -106,6 +106,27 @@ $di->setShared('deleteTodoUseCase', [
         ]
     ]
 ]);
+$di->setShared('requestTodoUseCase', [
+    'className' => 'CleanTodo\Domain\UseCase\RequestTodoUseCase',
+    'arguments' => [
+        [
+            'type' => 'service',
+            'name' => 'todoRepository'
+        ],
+        [
+            'type' => 'service',
+            'name' => 'userRepository'
+        ],
+        [
+            'type' => 'service',
+            'name' => 'todoStatusRepository'
+        ],
+        [
+            'type' => 'service',
+            'name' => 'todoPriorityRepository'
+        ]
+    ]
+]);
 $di->setShared('updateTodoUseCase', [
     'className' => 'CleanTodo\Domain\UseCase\UpdateTodoUseCase',
     'arguments' => [
