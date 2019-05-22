@@ -1,21 +1,17 @@
 <?php
 namespace CleanTodo\Domain\UseCase;
 
-use CleanTodo\Domain\Repository\TodoRepositoryInterface;
+use CleanTodo\Domain\Repository\UserRepositoryInterface;
 
 class GetTodoUseCase
 {
-    private $todoRepo;
-    public function __construct(TodoRepositoryInterface $todoRepo)
+    private $userRepo;
+    public function __construct(UserRepositoryInterface $userRepo)
     {
-        $this->todoRepo = $todoRepo;
+        $this->userRepo = $userRepo;
     }
-    public function getAll()
+    public function getAll($id)
     {
-        return $this->todoRepo->getAllTodo();
-    }
-    public function getById($id)
-    {
-        return $this->todoRepo->getTodoById($id);
+        return $this->userRepo->getAllTodoByUserId($id);
     }
 }

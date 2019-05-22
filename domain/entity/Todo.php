@@ -27,23 +27,61 @@ class Todo extends AbstractEntity
         return $this;
     }
 
+    protected $detail;
+
+    public function getDetail()
+    {
+        return $this->detail;
+    }
+
+    public function setDetail($detail)
+    {
+        $this->detail = $detail;
+        return $this;
+    }
+    protected $status;
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+    protected $priority;
+
+    public function getpriority()
+    {
+        return $this->priority;
+    }
+
+    public function setpriority($priority)
+    {
+        $this->priority = $priority;
+        return $this;
+    }
+
     protected $createdAt;
 
     public function getCreatedAt()
     {
-        return $this->createdAt;
+        return $this->createdAt->format('d-m-Y');
     }
 
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt()
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime();
+        $this->createdAt->setTimestamp(strtotime('now'));
         return $this;
     }
     protected $dateStart;
 
     public function getDateStart()
     {
-        return $this->dateStart;
+        return $this->dateStart->format('d-m-Y');
     }
 
     public function setDateStart($dateStart)
@@ -55,7 +93,7 @@ class Todo extends AbstractEntity
 
     public function getDateEnd()
     {
-        return $this->dateEnd;
+        return $this->dateEnd->format('d-m-Y');
     }
 
     public function setDateEnd($dateEnd)

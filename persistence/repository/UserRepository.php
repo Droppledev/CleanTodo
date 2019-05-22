@@ -34,4 +34,14 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
     {
         return $this->entityManager->getRepository($this->entityClass)->findOneBy(array('username' => $username, 'password' => $password));
     }
+
+    public function getAllTodoByUserId($id)
+    {
+        $user = $this->entityManager->getRepository($this->entityClass)->find($id);
+        return $user->getTodos();
+    }
+    public function getReference($id)
+    {
+        return $this->entityManager->getReference($this->entityClass, $id);
+    }
 }

@@ -15,6 +15,15 @@ $entityManager = Doctrine\ORM\EntityManager::create($conn, $doctrine_config);
 $di->setShared('entityManager', function () use ($entityManager) {
     return $entityManager;
 });
+$di->setShared('userEntity', function () {
+    return new CleanTodo\Domain\Entity\User;
+});
+$di->setShared('todoEntity', function () {
+    return new CleanTodo\Domain\Entity\Todo;
+});
+$di->setShared('todoDetailEntity', function () {
+    return new CleanTodo\Domain\Entity\TodoDetail;
+});
 $di->setShared('userRepository', [
     'className' => 'CleanTodo\Persistence\Repository\UserRepository',
     'arguments' => [
@@ -24,9 +33,6 @@ $di->setShared('userRepository', [
         ]
     ]
 ]);
-$di->setShared('userEntity', function () {
-    return new CleanTodo\Domain\Entity\User;
-});
 $di->setShared('todoRepository', [
     'className' => 'CleanTodo\Persistence\Repository\TodoRepository',
     'arguments' => [
@@ -36,16 +42,49 @@ $di->setShared('todoRepository', [
         ]
     ]
 ]);
-$di->setShared('todoEntity', function () {
-    return new CleanTodo\Domain\Entity\Todo;
-});
+$di->setShared('todoPriorityRepository', [
+    'className' => 'CleanTodo\Persistence\Repository\TodoPriorityRepository',
+    'arguments' => [
+        [
+            'type' => 'service',
+            'name' => 'entityManager'
+        ]
+    ]
+]);
+$di->setShared('todoStatusRepository', [
+    'className' => 'CleanTodo\Persistence\Repository\TodoStatusRepository',
+    'arguments' => [
+        [
+            'type' => 'service',
+            'name' => 'entityManager'
+        ]
+    ]
+]);
 
 $di->setShared('getTodoUseCase', [
     'className' => 'CleanTodo\Domain\UseCase\GetTodoUseCase',
     'arguments' => [
         [
             'type' => 'service',
-            'name' => 'todoRepository'
+            'name' => 'userRepository'
+        ]
+    ]
+]);
+$di->setShared('getTodoPriorityUseCase', [
+    'className' => 'CleanTodo\Domain\UseCase\GetTodoPriorityUseCase',
+    'arguments' => [
+        [
+            'type' => 'service',
+            'name' => 'todoPriorityRepository'
+        ]
+    ]
+]);
+$di->setShared('getTodoStatusUseCase', [
+    'className' => 'CleanTodo\Domain\UseCase\GetTodoStatusUseCase',
+    'arguments' => [
+        [
+            'type' => 'service',
+            'name' => 'todoStatusRepository'
         ]
     ]
 ]);

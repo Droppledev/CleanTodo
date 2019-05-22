@@ -11,10 +11,13 @@ CleanTodo\Domain\Entity\Todo:
       length: 256
     createdAt:
       column: created_at
+      type: datetime
     dateStart:
       column: start_date
+      type: date
     dateEnd:
       column: end_date
+      type: date
   manyToOne:
     user:
       targetEntity: CleanTodo\Domain\Entity\User
@@ -22,3 +25,22 @@ CleanTodo\Domain\Entity\Todo:
         name: user_id
         inversedBy: todos
         referencedColumnName: id
+  oneToOne:
+    priority:
+      targetEntity: CleanTodo\Domain\Entity\TodoPriority
+      joinColumn:
+        name: priority_id
+        referencedColumnName: id
+    status:
+      targetEntity: CleanTodo\Domain\Entity\TodoStatus
+      joinColumn:
+        name: status_id
+        referencedColumnName: id
+    detail:
+      targetEntity: CleanTodo\Domain\Entity\TodoDetail
+      joinColumn:
+        name: detail_id
+        referencedColumnName: id
+        onDelete: CASCADE
+      cascade: ["persist", "merge", "remove"]
+

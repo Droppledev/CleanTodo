@@ -1,0 +1,11 @@
+CleanTodo\Domain\Entity\TodoStatus:
+  type: entity
+  table: todo_status
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: IDENTITY
+  fields:
+    status:
+      length: 256

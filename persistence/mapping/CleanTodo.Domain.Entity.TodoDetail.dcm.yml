@@ -1,0 +1,11 @@
+CleanTodo\Domain\Entity\TodoDetail:
+  type: entity
+  table: todo_detail
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: IDENTITY
+  fields:
+    detail:
+      length: 256

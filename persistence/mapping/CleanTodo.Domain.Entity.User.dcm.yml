@@ -14,5 +14,6 @@ CleanTodo\Domain\Entity\User:
       length: 256
   oneToMany:
     todos:
+      orderBy: { 'priority': 'ASC', 'dateEnd': 'ASC' }
       targetEntity: CleanTodo\Domain\Entity\Todo
       mappedBy: user

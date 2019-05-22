@@ -1,0 +1,11 @@
+CleanTodo\Domain\Entity\TodoPriority:
+  type: entity
+  table: todo_priority
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: IDENTITY
+  fields:
+    priority:
+      length: 256
