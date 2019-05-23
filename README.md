@@ -1,3 +1,3 @@
-# Phalcon Doctrine 2 Integration
+# Phalcon Clean Todo
 
-Skeleton application for phalcon integrated with doctrine2.
+clean architecture implementation of todo list with phalcon and doctrine 2
