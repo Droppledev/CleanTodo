@@ -23,6 +23,7 @@ class GetTodoUseCase
             array_push(
                 $data,
                 array(
+                    'id' => $todo->getId(),
                     'title' => $todo->getTitle(),
                     'detail' => $todo->getDetail()->getDetail(),
                     'priority' => $todo->getPriority()->getPriority(),
